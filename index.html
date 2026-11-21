@@ -90,68 +90,169 @@
       "Напитки"
     ];
 
-    const DEFAULT_MENU = [
-      {
-        id: "1",
-        category: "Завтраки",
-        title: "Бриошь с авокадо и камчатским крабом",
-        description: "Хрустящая бриошь, гуакамоле из хааса, мясо краба, яйцо пашот и соус голландез.",
-        weight: "260 г",
-        price: 950,
-        badge: "Шеф",
-        image: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800&auto=format&fit=crop&q=80"
-      },
-      {
-        id: "2",
-        category: "Завтраки",
-        title: "Сырники из рикотты с солёной карамелью",
-        description: "Нежные сырники без муки, ванильный крем-чиз, домашняя карамель и ягоды.",
-        weight: "210 г",
-        price: 520,
-        badge: "",
-        image: "https://images.unsplash.com/photo-1588137378633-dea1336ce1e2?w=800&auto=format&fit=crop&q=80"
-      },
-      {
-        id: "3",
-        category: "Салаты и закуски",
-        title: "Тартар из говядины с трюфельным муссом",
-        description: "Рубленая вырезка блэк ангус, каперсы, выдержанный сырный мусс и тёплый тартин.",
-        weight: "180 г",
-        price: 890,
-        badge: "Хит",
-        image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=800&auto=format&fit=crop&q=80"
-      },
-      {
-        id: "4",
-        category: "Горячее",
-        title: "Филе лосося с кремом из батата",
-        description: "Лосось слабой прожарки, пюре из батата, спаржа и классический соус бер-блан.",
-        weight: "310 г",
-        price: 1290,
-        badge: "Шеф",
-        image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=800&auto=format&fit=crop&q=80"
-      },
-      {
-        id: "5",
-        category: "Десерты",
-        title: "Баскский чизкейк с инжиром",
-        description: "Карамельная корочка, кремовая сердцевина и конфитюр из спелого инжира.",
-        weight: "190 г",
-        price: 540,
-        badge: "",
-        image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=800&auto=format&fit=crop&q=80"
-      },
-      {
-        id: "6",
-        category: "Напитки",
-        title: "Матча-тоник юдзу и розмарин",
-        description: "Японская матча, сухой тоник, цитрусовое пюре юдзу и веточка розмарина.",
-        weight: "350 мл",
-        price: 450,
-        badge: "",
-        image: "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=800&auto=format&fit=crop&q=80"
-      }
-    ];
+  const DEMO_MENU_15 = [
+  // Завтраки (3)
+  {
+    id: "d-101",
+    category: "Завтраки",
+    title: "Бриошь с авокадо и яйцом пашот",
+    description: "Тёплая бриошь, пюре из спелого авокадо, яйцо пашот и микрозелень.",
+    weight: "240 г",
+    price: 590,
+    badge: "Шеф",
+    image: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800&auto=format&fit=crop&q=80"
+  },
+  {
+    id: "d-102",
+    category: "Завтраки",
+    title: "Сырники с ванильным кремом и ягодами",
+    description: "Румяные творожные сырники, сметанно-ванильный соус и свежие ягоды.",
+    weight: "220 г",
+    price: 490,
+    badge: "Хит",
+    image: "https://images.unsplash.com/photo-1588137378633-dea1336ce1e2?w=800&auto=format&fit=crop&q=80"
+  },
+  {
+    id: "d-103",
+    category: "Завтраки",
+    title: "Слоёный круассан со слабосолёным лососем",
+    description: "Хрустящий круассан, творожный крем, лосось и слайсы свежего огурца.",
+    weight: "210 г",
+    price: 670,
+    badge: "",
+    image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=800&auto=format&fit=crop&q=80"
+  },
+
+  // Салаты и закуски (3)
+  {
+    id: "d-104",
+    category: "Салаты и закуски",
+    title: "Тартар из говядины с хрустящим хлебом",
+    description: "Рубленая говяжья вырезка, каперсы, красный лук, оливковое масло и тосты.",
+    weight: "190 г",
+    price: 860,
+    badge: "Хит",
+    image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=800&auto=format&fit=crop&q=80"
+  },
+  {
+    id: "d-105",
+    category: "Салаты и закуски",
+    title: "Буррата с томатами и соусом песто",
+    description: "Нежная буррата, спелые томаты, базиликовое песто и бальзамический крем.",
+    weight: "270 г",
+    price: 780,
+    badge: "",
+    image: "https://images.unsplash.com/photo-1608897013039-887f21d8c804?w=800&auto=format&fit=crop&q=80"
+  },
+  {
+    id: "d-106",
+    category: "Салаты и закуски",
+    title: "Салат с обжаренной курицей и зеленью",
+    description: "Сочное куриное филе, микс салата, черри, хрустящие гренки и лёгкая заправка.",
+    weight: "250 г",
+    price: 620,
+    badge: "",
+    image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&auto=format&fit=crop&q=80"
+  },
+
+  // Супы (2)
+  {
+    id: "d-107",
+    category: "Супы",
+    title: "Тыквенный крем-суп с семечками",
+    description: "Бархатный суп из запечённой тыквы со сливками, пряными нотами и тыквенными семечками.",
+    weight: "310 г",
+    price: 540,
+    badge: "",
+    image: "https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?w=800&auto=format&fit=crop&q=80"
+  },
+  {
+    id: "d-108",
+    category: "Супы",
+    title: "Луковый суп под сырной корочкой",
+    description: "Наваристый бульон с карамелизированным луком, гренкой и запечённым сыром.",
+    weight: "300 г",
+    price: 510,
+    badge: "",
+    image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=800&auto=format&fit=crop&q=80"
+  },
+
+  // Горячее (3)
+  {
+    id: "d-109",
+    category: "Горячее",
+    title: "Филе лосося на гриле с овощами",
+    description: "Стейк лосося, обжаренные сезонные овощи и сливочно-цитрусовый соус.",
+    weight: "300 г",
+    price: 1250,
+    badge: "Шеф",
+    image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=800&auto=format&fit=crop&q=80"
+  },
+  {
+    id: "d-110",
+    category: "Горячее",
+    title: "Грибное ризотто с пармезаном",
+    description: "Кремовое ризотто с лесными грибами, белым вином, сливочным маслом и пармезаном.",
+    weight: "290 г",
+    price: 840,
+    badge: "Хит",
+    image: "https://images.unsplash.com/photo-1633964913295-ceb43826e7c9?w=800&auto=format&fit=crop&q=80"
+  },
+  {
+    id: "d-111",
+    category: "Горячее",
+    title: "Паста с томатным соусом и базиликом",
+    description: "Паста аль денте в густом томатном соусе с чесноком, оливковым маслом и свежим базиликом.",
+    weight: "280 г",
+    price: 680,
+    badge: "",
+    image: "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=800&auto=format&fit=crop&q=80"
+  },
+
+  // Десерты (2)
+  {
+    id: "d-112",
+    category: "Десерты",
+    title: "Баскский чизкейк с ягодным соусом",
+    description: "Карамелизированная корочка, нежная кремовая текстура и ягодный топпинг.",
+    weight: "180 г",
+    price: 520,
+    badge: "Хит",
+    image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=800&auto=format&fit=crop&q=80"
+  },
+  {
+    id: "d-113",
+    category: "Десерты",
+    title: "Тёплый шоколадный фондан с мороженым",
+    description: "Шоколадный десерт с жидким центром и шариком холодного ванильного мороженого.",
+    weight: "170 г",
+    price: 560,
+    badge: "",
+    image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&auto=format&fit=crop&q=80"
+  },
+
+  // Напитки (2)
+  {
+    id: "d-114",
+    category: "Напитки",
+    title: "Освежающий цитрусовый матча-тоник",
+    description: "Зелёный чай матча, тоник, цитрусовая свежесть и лёд.",
+    weight: "350 мл",
+    price: 430,
+    badge: "",
+    image: "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=800&auto=format&fit=crop&q=80"
+  },
+  {
+    id: "d-115",
+    category: "Напитки",
+    title: "Флэт Уайт на двойном эспрессо",
+    description: "Плотный кофейный напиток с бархатистой микропеной.",
+    weight: "220 мл",
+    price: 350,
+    badge: "",
+    image: "https://images.unsplash.com/photo-1577968897966-3d4325b36b61?w=800&auto=format&fit=crop&q=80"
+  }
+];
 
     const DEFAULT_REVIEWS = [
       {
