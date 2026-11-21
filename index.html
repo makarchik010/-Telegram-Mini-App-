@@ -24,6 +24,8 @@
               terracottaDark: '#9C4215',
               ink: 'var(--text-main, #1C1917)',
               muted: 'var(--text-muted, #78716C)',
+              pillActiveBg: 'var(--pill-active-bg, #1C1917)',
+              pillActiveText: 'var(--pill-active-text, #FFFFFF)',
               footer: '#1E2B25'
             }
           },
@@ -52,6 +54,8 @@
       --accent-main: #C05621;
       --text-main: #1C1917;
       --text-muted: #78716C;
+      --pill-active-bg: #1C1917;
+      --pill-active-text: #FFFFFF;
     }
 
     body {
@@ -71,14 +75,13 @@
   <div id="app" class="min-h-screen flex flex-col"></div>
 
   <script>
-    // ВСТАВЬТЕ ВАШ URL WEB APP ИЗ GOOGLE APPS SCRIPT:
     const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzPaXuJedwLy8i1eDGkDAe7lUAQgHlQ0pQsUsetgYxrkT54cIZB66tKFwfhnIVh3JMW5Q/exec";
 
     const RESTAURANT_LOCATIONS = [
-  { id: "loc-1", title: "L'Atelier · Патриаршие", address: "Москва, Малая Бронная ул., 19с1", hours: "09:00 – 23:00" },
-  { id: "loc-2", title: "L'Atelier · Хамовники", address: "Москва, ул. Усачёва, 29к3", hours: "10:00 – 23:00" },
-  { id: "loc-3", title: "L'Atelier · Замоскворечье", address: "Москва, Пятницкая ул., 43с2", hours: "09:00 – 22:00" }
-];
+      { id: "loc-1", title: "L'Atelier · Патриаршие", address: "Москва, Малая Бронная ул., 19с1", hours: "09:00 – 23:00" },
+      { id: "loc-2", title: "L'Atelier · Хамовники", address: "Москва, ул. Усачёва, 29к3", hours: "10:00 – 23:00" },
+      { id: "loc-3", title: "L'Atelier · Замоскворечье", address: "Москва, Пятницкая ул., 43с2", hours: "09:00 – 22:00" }
+    ];
 
     const DEFAULT_CATEGORIES = [
       "Все меню",
@@ -90,177 +93,166 @@
       "Напитки"
     ];
 
-const DEFAULT_MENU = [
-  // Завтраки (3)
-  {
-    id: "d-101",
-    category: "Завтраки",
-    title: "Бриошь с авокадо и яйцом пашот",
-    description: "Тёплая бриошь, пюре из спелого авокадо, яйцо пашот и микрозелень.",
-    weight: "240 г",
-    price: 590,
-    badge: "Шеф",
-    image: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800&auto=format&fit=crop&q=80"
-  },
-  {
-    id: "d-102",
-    category: "Завтраки",
-    title: "Сырники с ванильным кремом и ягодами",
-    description: "Румяные творожные сырники, сметанно-ванильный соус и свежие ягоды.",
-    weight: "220 г",
-    price: 490,
-    badge: "Хит",
-    image: "https://images.unsplash.com/photo-1588137378633-dea1336ce1e2?w=800&auto=format&fit=crop&q=80"
-  },
-  {
-    id: "d-103",
-    category: "Завтраки",
-    title: "Слоёный круассан со слабосолёным лососем",
-    description: "Хрустящий круассан, творожный крем, лосось и слайсы свежего огурца.",
-    weight: "210 г",
-    price: 670,
-    badge: "",
-    image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=800&auto=format&fit=crop&q=80"
-  },
-
-  // Салаты и закуски (3)
-  {
-    id: "d-104",
-    category: "Салаты и закуски",
-    title: "Тартар из говядины с хрустящим хлебом",
-    description: "Рубленая говяжья вырезка, каперсы, красный лук, оливковое масло и тосты.",
-    weight: "190 г",
-    price: 860,
-    badge: "Хит",
-    image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=800&auto=format&fit=crop&q=80"
-  },
-  {
-    id: "d-105",
-    category: "Салаты и закуски",
-    title: "Буррата с томатами и соусом песто",
-    description: "Нежная буррата, спелые томаты, базиликовое песто и бальзамический крем.",
-    weight: "270 г",
-    price: 780,
-    badge: "",
-    image: "https://images.unsplash.com/photo-1608897013039-887f21d8c804?w=800&auto=format&fit=crop&q=80"
-  },
-  {
-    id: "d-106",
-    category: "Салаты и закуски",
-    title: "Салат с обжаренной курицей и зеленью",
-    description: "Сочное куриное филе, микс салата, черри, хрустящие гренки и лёгкая заправка.",
-    weight: "250 г",
-    price: 620,
-    badge: "",
-    image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&auto=format&fit=crop&q=80"
-  },
-
-  // Супы (2)
-  {
-    id: "d-107",
-    category: "Супы",
-    title: "Тыквенный крем-суп с семечками",
-    description: "Бархатный суп из запечённой тыквы со сливками, пряными нотами и тыквенными семечками.",
-    weight: "310 г",
-    price: 540,
-    badge: "",
-    image: "https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?w=800&auto=format&fit=crop&q=80"
-  },
-  {
-    id: "d-108",
-    category: "Супы",
-    title: "Луковый суп под сырной корочкой",
-    description: "Наваристый бульон с карамелизированным луком, гренкой и запечённым сыром.",
-    weight: "300 г",
-    price: 510,
-    badge: "",
-    image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=800&auto=format&fit=crop&q=80"
-  },
-
-  // Горячее (3)
-  {
-    id: "d-109",
-    category: "Горячее",
-    title: "Филе лосося на гриле с овощами",
-    description: "Стейк лосося, обжаренные сезонные овощи и сливочно-цитрусовый соус.",
-    weight: "300 г",
-    price: 1250,
-    badge: "Шеф",
-    image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=800&auto=format&fit=crop&q=80"
-  },
-  {
-    id: "d-110",
-    category: "Горячее",
-    title: "Грибное ризотто с пармезаном",
-    description: "Кремовое ризотто с лесными грибами, белым вином, сливочным маслом и пармезаном.",
-    weight: "290 г",
-    price: 840,
-    badge: "Хит",
-    image: "https://images.unsplash.com/photo-1633964913295-ceb43826e7c9?w=800&auto=format&fit=crop&q=80"
-  },
-  {
-    id: "d-111",
-    category: "Горячее",
-    title: "Паста с томатным соусом и базиликом",
-    description: "Паста аль денте в густом томатном соусе с чесноком, оливковым маслом и свежим базиликом.",
-    weight: "280 г",
-    price: 680,
-    badge: "",
-    image: "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=800&auto=format&fit=crop&q=80"
-  },
-
-  // Десерты (2)
-  {
-    id: "d-112",
-    category: "Десерты",
-    title: "Баскский чизкейк с ягодным соусом",
-    description: "Карамелизированная корочка, нежная кремовая текстура и ягодный топпинг.",
-    weight: "180 г",
-    price: 520,
-    badge: "Хит",
-    image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=800&auto=format&fit=crop&q=80"
-  },
-  {
-    id: "d-113",
-    category: "Десерты",
-    title: "Тёплый шоколадный фондан с мороженым",
-    description: "Шоколадный десерт с жидким центром и шариком холодного ванильного мороженого.",
-    weight: "170 г",
-    price: 560,
-    badge: "",
-    image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&auto=format&fit=crop&q=80"
-  },
-
-  // Напитки (2)
-  {
-    id: "d-114",
-    category: "Напитки",
-    title: "Освежающий цитрусовый матча-тоник",
-    description: "Зелёный чай матча, тоник, цитрусовая свежесть и лёд.",
-    weight: "350 мл",
-    price: 430,
-    badge: "",
-    image: "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=800&auto=format&fit=crop&q=80"
-  },
-  {
-    id: "d-115",
-    category: "Напитки",
-    title: "Флэт Уайт на двойном эспрессо",
-    description: "Плотный кофейный напиток с бархатистой микропеной.",
-    weight: "220 мл",
-    price: 350,
-    badge: "",
-    image: "https://images.unsplash.com/photo-1577968897966-3d4325b36b61?w=800&auto=format&fit=crop&q=80"
-  }
-];
+    const DEFAULT_MENU = [
+      {
+        id: "d-101",
+        category: "Завтраки",
+        title: "Бриошь с авокадо и яйцом пашот",
+        description: "Тёплая бриошь, пюре из спелого авокадо, яйцо пашот и микрозелень.",
+        weight: "240 г",
+        price: 590,
+        badge: "Шеф",
+        image: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800&auto=format&fit=crop&q=80"
+      },
+      {
+        id: "d-102",
+        category: "Завтраки",
+        title: "Сырники с ванильным кремом и ягодами",
+        description: "Румяные творожные сырники, сметанно-ванильный соус и свежие ягоды.",
+        weight: "220 г",
+        price: 490,
+        badge: "Хит",
+        image: "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=800&auto=format&fit=crop&q=80"
+      },
+      {
+        id: "d-103",
+        category: "Завтраки",
+        title: "Слоёный круассан со слабосолёным лососем",
+        description: "Хрустящий круассан, творожный крем, лосось и слайсы свежего огурца.",
+        weight: "210 г",
+        price: 670,
+        badge: "",
+        image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=800&auto=format&fit=crop&q=80"
+      },
+      {
+        id: "d-104",
+        category: "Салаты и закуски",
+        title: "Тартар из говядины с хрустящим хлебом",
+        description: "Рубленая говяжья вырезка, каперсы, красный лук, оливковое масло и тосты.",
+        weight: "190 г",
+        price: 860,
+        badge: "Хит",
+        image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=800&auto=format&fit=crop&q=80"
+      },
+      {
+        id: "d-105",
+        category: "Салаты и закуски",
+        title: "Буррата с томатами и соусом песто",
+        description: "Нежная буррата, спелые томаты, базиликовое песто и бальзамический крем.",
+        weight: "270 г",
+        price: 780,
+        badge: "",
+        image: "https://images.unsplash.com/photo-1608897013039-887f21d8c804?w=800&auto=format&fit=crop&q=80"
+      },
+      {
+        id: "d-106",
+        category: "Салаты и закуски",
+        title: "Салат с обжаренной курицей и зеленью",
+        description: "Сочное куриное филе, микс салата, черри, хрустящие гренки и лёгкая заправка.",
+        weight: "250 г",
+        price: 620,
+        badge: "",
+        image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&auto=format&fit=crop&q=80"
+      },
+      {
+        id: "d-107",
+        category: "Супы",
+        title: "Тыквенный крем-суп с семечками",
+        description: "Бархатный суп из запечённой тыквы со сливками, пряными нотами и тыквенными семечками.",
+        weight: "310 г",
+        price: 540,
+        badge: "",
+        image: "https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?w=800&auto=format&fit=crop&q=80"
+      },
+      {
+        id: "d-108",
+        category: "Супы",
+        title: "Луковый суп под сырной корочкой",
+        description: "Наваристый бульон с карамелизированным луком, гренкой и запечённым сыром.",
+        weight: "300 г",
+        price: 510,
+        badge: "",
+        image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=800&auto=format&fit=crop&q=80"
+      },
+      {
+        id: "d-109",
+        category: "Горячее",
+        title: "Филе лосося на гриле с овощами",
+        description: "Стейк лосося, обжаренные сезонные овощи и сливочно-цитрусовый соус.",
+        weight: "300 г",
+        price: 1250,
+        badge: "Шеф",
+        image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=800&auto=format&fit=crop&q=80"
+      },
+      {
+        id: "d-110",
+        category: "Горячее",
+        title: "Грибное ризотто с пармезаном",
+        description: "Кремовое ризотто с лесными грибами, белым вином, сливочным маслом и пармезаном.",
+        weight: "290 г",
+        price: 840,
+        badge: "Хит",
+        image: "https://images.unsplash.com/photo-1633964913295-ceb43826e7c9?w=800&auto=format&fit=crop&q=80"
+      },
+      {
+        id: "d-111",
+        category: "Горячее",
+        title: "Паста с томатным соусом и базиликом",
+        description: "Паста аль денте в густом томатном соусе с чесноком, оливковым маслом и свежим базиликом.",
+        weight: "280 г",
+        price: 680,
+        badge: "",
+        image: "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=800&auto=format&fit=crop&q=80"
+      },
+      {
+        id: "d-112",
+        category: "Десерты",
+        title: "Баскский чизкейк с ягодным соусом",
+        description: "Карамелизированная корочка, нежная кремовая текстура и ягодный топпинг.",
+        weight: "180 г",
+        price: 520,
+        badge: "Хит",
+        image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=800&auto=format&fit=crop&q=80"
+      },
+      {
+        id: "d-113",
+        category: "Десерты",
+        title: "Тёплый шоколадный фондан с мороженым",
+        description: "Шоколадный десерт с жидким центром и шариком холодного ванильного мороженого.",
+        weight: "170 г",
+        price: 560,
+        badge: "",
+        image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&auto=format&fit=crop&q=80"
+      },
+      {
+        id: "d-114",
+        category: "Напитки",
+        title: "Освежающий цитрусовый матча-тоник",
+        description: "Зелёный чай матча, тоник, цитрусовая свежесть и лёд.",
+        weight: "350 мл",
+        price: 430,
+        badge: "",
+        image: "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=800&auto=format&fit=crop&q=80"
+      },
+      {
+        id: "d-115",
+        category: "Напитки",
+        title: "Флэт Уайт на двойном эспрессо",
+        description: "Плотный кофейный напиток с бархатистой микропеной.",
+        weight: "220 мл",
+        price: 350,
+        badge: "",
+        image: "https://images.unsplash.com/photo-1577968897966-3d4325b36b61?w=800&auto=format&fit=crop&q=80"
+      }
+    ];
 
     const DEFAULT_REVIEWS = [
       {
         id: "r-1",
         name: "Анна Волкова",
-        location: "L'Atelier · Центр",
+        location: "L'Atelier · Патриаршие",
         date: "Ноябрь 2026",
-        text: "Заказывали лосось с бататом и тартар — привезли горячим за 35 минут, упаковка аккуратная, порции честные."
+        text: "Заказывали лосось и тартар — привезли горячим за 35 минут, упаковка аккуратная, порции честные."
       },
       {
         id: "r-2",
@@ -275,19 +267,23 @@ const DEFAULT_MENU = [
     const isTelegram = Boolean(tg && tg.initData && tg.initData.length > 0);
     const hasGasUrl = Boolean(GAS_WEB_APP_URL && !GAS_WEB_APP_URL.includes("ВАШ_DEPLOYMENT_ID"));
 
+    const initialBranch =
+      RESTAURANT_LOCATIONS[Math.floor(Math.random() * RESTAURANT_LOCATIONS.length)] ||
+      RESTAURANT_LOCATIONS[0];
+
     const state = {
       menuItems: DEFAULT_MENU.slice(),
       reviews: DEFAULT_REVIEWS.slice(),
-      selectedBranchId: RESTAURANT_LOCATIONS[0].id,
+      selectedBranchId: initialBranch.id,
       activeCategory: "Все меню",
       cart: {},
-      view: "menu", // 'menu' | 'cart' | 'success'
+      view: "menu",
       selectedDishId: null,
-      orderType: "delivery", // 'delivery' | 'pickup' | 'table'
+      orderType: "delivery",
       form: {
         name: "",
         phone: "",
-        locationValue: RESTAURANT_LOCATIONS[0].address,
+        locationValue: "",
         comment: ""
       },
       isSubmitting: false,
@@ -309,12 +305,38 @@ const DEFAULT_MENU = [
       tg.expand();
 
       const p = tg.themeParams || {};
+      const isDark = tg.colorScheme === "dark";
       const root = document.documentElement.style;
-      if (p.bg_color) root.setProperty("--bg-main", p.bg_color);
-      if (p.secondary_bg_color) root.setProperty("--bg-soft", p.secondary_bg_color);
-      if (p.text_color) root.setProperty("--text-main", p.text_color);
-      if (p.hint_color) root.setProperty("--text-muted", p.hint_color);
-      if (p.button_color) root.setProperty("--accent-main", p.button_color);
+
+      if (isDark) {
+        const bgMain = p.bg_color || "#141414";
+        const bgCard = p.secondary_bg_color || "#1E1E1E";
+        const bgSoft = "#2A2A2A";
+        const borderSoft = "rgba(255,255,255,0.12)";
+        const textMain = p.text_color || "#F5F5F5";
+        const textMuted = p.hint_color || "#A1A1AA";
+        const accent = p.button_color || "#E06D3B";
+
+        root.setProperty("--bg-main", bgMain);
+        root.setProperty("--bg-card", bgCard);
+        root.setProperty("--bg-soft", bgSoft);
+        root.setProperty("--border-soft", borderSoft);
+        root.setProperty("--text-main", textMain);
+        root.setProperty("--text-muted", textMuted);
+        root.setProperty("--accent-main", accent);
+        root.setProperty("--pill-active-bg", "#F5F5F5");
+        root.setProperty("--pill-active-text", "#141414");
+      } else {
+        if (p.bg_color) root.setProperty("--bg-main", p.bg_color);
+        if (p.secondary_bg_color) root.setProperty("--bg-soft", p.secondary_bg_color);
+        root.setProperty("--bg-card", "#FFFFFF");
+        root.setProperty("--border-soft", "#E8DFD5");
+        if (p.text_color) root.setProperty("--text-main", p.text_color);
+        if (p.hint_color) root.setProperty("--text-muted", p.hint_color);
+        if (p.button_color) root.setProperty("--accent-main", p.button_color);
+        root.setProperty("--pill-active-bg", "#1C1917");
+        root.setProperty("--pill-active-text", "#FFFFFF");
+      }
 
       if (tg.viewportStableHeight) {
         root.setProperty("--tg-viewport-stable-height", `${tg.viewportStableHeight}px`);
@@ -354,19 +376,19 @@ const DEFAULT_MENU = [
 
         const revJson = await revRes.json();
         if (Array.isArray(revJson) && revJson.length > 0) {
-          state.reviews = revJson.map((r, idx) => ({
-            id: String(r.id || r.ID || `r-${idx + 1}`),
-            name: String(r.name || r["Имя"] || "Гость"),
-            location: String(r.location || r["Локация"] || ""),
-            date: String(r.date || r["Дата"] || ""),
-            text: String(r.text || r["Текст"] || "")
-          })).filter((r) => r.text);
+          state.reviews = revJson
+            .map((r, idx) => ({
+              id: String(r.id || r.ID || `r-${idx + 1}`),
+              name: String(r.name || r["Имя"] || "Гость"),
+              location: String(r.location || r["Локация"] || ""),
+              date: String(r.date || r["Дата"] || ""),
+              text: String(r.text || r["Текст"] || "")
+            }))
+            .filter((r) => r.text);
         }
 
         render();
-      } catch (_) {
-        // Оставляем локальные данные, если сеть или таблица недоступны
-      }
+      } catch (_) {}
     }
 
     function getCurrentBranch() {
@@ -428,10 +450,8 @@ const DEFAULT_MENU = [
       haptic("light");
       state.view = nextView;
       state.errorMsg = "";
-      if (nextView === "cart" && !state.form.locationValue.trim()) {
-        const branch = getCurrentBranch();
-        state.form.locationValue =
-          state.orderType === "pickup" ? `Самовывоз: ${branch.address}` : "";
+      if (nextView === "cart" && !state.form.locationValue.trim() && state.orderType === "pickup") {
+        state.form.locationValue = `Самовывоз: ${getCurrentBranch().address}`;
       }
       render();
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -445,7 +465,7 @@ const DEFAULT_MENU = [
 
     function getLocationPlaceholder(type) {
       const branch = getCurrentBranch();
-      if (type === "delivery") return "Адрес: улица, дом, квартира, подъезд *";
+      if (type === "delivery") return "Адрес доставки: улица, дом, квартира *";
       if (type === "pickup") return `Точка самовывоза (${branch.address}) *`;
       return "Номер столика (например: Стол №5) *";
     }
@@ -601,7 +621,7 @@ const DEFAULT_MENU = [
             data-branch-id="${escapeHtml(loc.id)}"
             class="branch-pill text-left px-3.5 py-2 rounded-xl border text-xs transition ${
               active
-                ? "bg-bistro-ink text-white border-bistro-ink"
+                ? "bg-bistro-pillActiveBg text-bistro-pillActiveText border-bistro-pillActiveBg"
                 : "bg-bistro-surface text-bistro-muted border-bistro-border hover:text-bistro-ink"
             }"
           >
@@ -616,12 +636,12 @@ const DEFAULT_MENU = [
           <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
             <div>
               <span class="text-[10px] uppercase tracking-[0.2em] font-semibold text-bistro-terracotta">Адреса ресторанов</span>
-              <h2 class="font-serif font-bold text-base sm:text-lg">${escapeHtml(current.address)} · <span class="text-xs font-sans font-normal text-bistro-muted">${escapeHtml(current.hours)}</span></h2>
+              <h2 class="font-serif font-bold text-base sm:text-lg text-bistro-ink">${escapeHtml(current.address)} · <span class="text-xs font-sans font-normal text-bistro-muted">${escapeHtml(current.hours)}</span></h2>
             </div>
             <button
               type="button"
               id="random-branch-btn"
-              class="px-3 py-1.5 rounded-full bg-bistro-sand hover:bg-bistro-border/60 text-xs font-semibold border border-bistro-border transition"
+              class="px-3 py-1.5 rounded-full bg-bistro-sand hover:opacity-90 text-bistro-ink text-xs font-semibold border border-bistro-border transition"
             >
               🎲 Случайный адрес
             </button>
@@ -638,8 +658,8 @@ const DEFAULT_MENU = [
         .map(
           (rev) => `
             <article class="bg-bistro-surface rounded-2xl p-4 border border-bistro-border shadow-sm flex flex-col justify-between">
-              <p class="text-xs sm:text-sm text-bistro-ink/90 leading-relaxed">«${escapeHtml(rev.text)}»</p>
-              <div class="mt-3 pt-2.5 border-t border-bistro-border/60 flex items-center justify-between text-xs text-bistro-muted">
+              <p class="text-xs sm:text-sm text-bistro-ink leading-relaxed">«${escapeHtml(rev.text)}»</p>
+              <div class="mt-3 pt-2.5 border-t border-bistro-border flex items-center justify-between text-xs text-bistro-muted">
                 <span class="font-semibold text-bistro-ink">${escapeHtml(rev.name)}</span>
                 <span>${escapeHtml([rev.location, rev.date].filter(Boolean).join(" · "))}</span>
               </div>
@@ -653,7 +673,7 @@ const DEFAULT_MENU = [
           <div class="flex items-end justify-between gap-2 mb-4">
             <div>
               <span class="text-[10px] uppercase tracking-[0.2em] font-semibold text-bistro-terracotta">Гости о нас</span>
-              <h2 class="font-serif font-bold text-xl sm:text-2xl">Отзывы</h2>
+              <h2 class="font-serif font-bold text-xl sm:text-2xl text-bistro-ink">Отзывы</h2>
             </div>
             <span class="text-xs text-bistro-muted">${state.reviews.length} отзыва</span>
           </div>
@@ -686,7 +706,7 @@ const DEFAULT_MENU = [
               data-cat="${escapeHtml(cat)}"
               class="cat-btn whitespace-nowrap px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition border ${
                 active
-                  ? "bg-bistro-ink text-white border-bistro-ink shadow-sm"
+                  ? "bg-bistro-pillActiveBg text-bistro-pillActiveText border-bistro-pillActiveBg shadow-sm"
                   : "bg-bistro-surface text-bistro-muted border-bistro-border hover:bg-bistro-sand hover:text-bistro-ink"
               }"
             >
@@ -712,9 +732,9 @@ const DEFAULT_MENU = [
               `
               : `
                 <div class="inline-flex items-center bg-bistro-sand rounded-full p-1 border border-bistro-border">
-                  <button type="button" data-dec="${escapeHtml(dish.id)}" class="dec-btn w-7 h-7 rounded-full flex items-center justify-center font-bold text-sm hover:bg-white transition">−</button>
-                  <span class="text-xs font-semibold px-2.5 min-w-[24px] text-center">${qty}</span>
-                  <button type="button" data-inc="${escapeHtml(dish.id)}" class="inc-btn w-7 h-7 rounded-full flex items-center justify-center font-bold text-sm bg-bistro-ink text-white hover:opacity-90 transition">+</button>
+                  <button type="button" data-dec="${escapeHtml(dish.id)}" class="dec-btn w-7 h-7 rounded-full flex items-center justify-center font-bold text-sm text-bistro-ink hover:opacity-80 transition">−</button>
+                  <span class="text-xs font-semibold px-2.5 min-w-[24px] text-center text-bistro-ink">${qty}</span>
+                  <button type="button" data-inc="${escapeHtml(dish.id)}" class="inc-btn w-7 h-7 rounded-full flex items-center justify-center font-bold text-sm bg-bistro-pillActiveBg text-bistro-pillActiveText hover:opacity-90 transition">+</button>
                 </div>
               `;
 
@@ -743,15 +763,15 @@ const DEFAULT_MENU = [
                   class="open-dish flex-1 min-w-0 flex flex-col justify-between cursor-pointer"
                 >
                   <div>
-                    <h3 class="font-serif font-bold text-sm sm:text-base leading-snug line-clamp-2">${escapeHtml(dish.title)}</h3>
+                    <h3 class="font-serif font-bold text-sm sm:text-base leading-snug line-clamp-2 text-bistro-ink">${escapeHtml(dish.title)}</h3>
                     <p class="text-xs text-bistro-muted mt-1 line-clamp-2 leading-relaxed">${escapeHtml(dish.description)}</p>
                   </div>
                   <span class="text-[11px] text-bistro-muted mt-1.5">${escapeHtml(dish.weight)}</span>
                 </div>
               </div>
 
-              <div class="flex items-center justify-between mt-4 pt-3 border-t border-bistro-border/60">
-                <span class="font-bold text-base sm:text-lg">${dish.price} ₽</span>
+              <div class="flex items-center justify-between mt-4 pt-3 border-t border-bistro-border">
+                <span class="font-bold text-base sm:text-lg text-bistro-ink">${dish.price} ₽</span>
                 ${controlHtml}
               </div>
             </article>
@@ -807,14 +827,14 @@ const DEFAULT_MENU = [
                     <div class="flex items-center gap-3 min-w-0">
                       <img src="${escapeHtml(dish.image)}" alt="${escapeHtml(dish.title)}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0" />
                       <div class="min-w-0">
-                        <h4 class="text-sm font-semibold truncate">${escapeHtml(dish.title)}</h4>
+                        <h4 class="text-sm font-semibold truncate text-bistro-ink">${escapeHtml(dish.title)}</h4>
                         <span class="text-xs text-bistro-muted">${dish.price} ₽ × ${qty} = ${dish.price * qty} ₽</span>
                       </div>
                     </div>
                     <div class="inline-flex items-center bg-bistro-sand rounded-full p-1 border border-bistro-border flex-shrink-0">
-                      <button type="button" data-dec="${escapeHtml(dish.id)}" class="dec-btn w-7 h-7 rounded-full flex items-center justify-center font-bold text-sm hover:bg-white">−</button>
-                      <span class="text-xs font-semibold px-2.5">${qty}</span>
-                      <button type="button" data-inc="${escapeHtml(dish.id)}" class="inc-btn w-7 h-7 rounded-full flex items-center justify-center font-bold text-sm bg-bistro-ink text-white">+</button>
+                      <button type="button" data-dec="${escapeHtml(dish.id)}" class="dec-btn w-7 h-7 rounded-full flex items-center justify-center font-bold text-sm text-bistro-ink">−</button>
+                      <span class="text-xs font-semibold px-2.5 text-bistro-ink">${qty}</span>
+                      <button type="button" data-inc="${escapeHtml(dish.id)}" class="inc-btn w-7 h-7 rounded-full flex items-center justify-center font-bold text-sm bg-bistro-pillActiveBg text-bistro-pillActiveText">+</button>
                     </div>
                   </div>
                 `;
@@ -836,7 +856,7 @@ const DEFAULT_MENU = [
               data-order-type="${opt.id}"
               class="order-type-btn py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold border transition ${
                 active
-                  ? "bg-bistro-ink text-white border-bistro-ink"
+                  ? "bg-bistro-pillActiveBg text-bistro-pillActiveText border-bistro-pillActiveBg"
                   : "bg-bistro-sand text-bistro-muted border-bistro-border hover:text-bistro-ink"
               }"
             >
@@ -850,7 +870,7 @@ const DEFAULT_MENU = [
         cartEntries.length > 0
           ? `
             <form id="order-form" class="bg-bistro-surface rounded-2xl p-5 sm:p-6 border border-bistro-border shadow-sm space-y-4">
-              <h3 class="font-serif font-bold text-base sm:text-lg">Способ получения и контакты</h3>
+              <h3 class="font-serif font-bold text-base sm:text-lg text-bistro-ink">Способ получения и контакты</h3>
 
               <div class="grid grid-cols-3 gap-2">
                 ${typeButtonsHtml}
@@ -863,7 +883,7 @@ const DEFAULT_MENU = [
                   required
                   placeholder="Ваше имя *"
                   value="${escapeHtml(state.form.name)}"
-                  class="w-full bg-bistro-sand/50 border border-bistro-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-bistro-terracotta"
+                  class="w-full bg-bistro-sand border border-bistro-border text-bistro-ink rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-bistro-terracotta"
                 />
                 <input
                   id="inp-phone"
@@ -871,7 +891,7 @@ const DEFAULT_MENU = [
                   required
                   placeholder="+7 (999) 123-45-67 *"
                   value="${escapeHtml(state.form.phone)}"
-                  class="w-full bg-bistro-sand/50 border border-bistro-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-bistro-terracotta"
+                  class="w-full bg-bistro-sand border border-bistro-border text-bistro-ink rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-bistro-terracotta"
                 />
               </div>
 
@@ -881,17 +901,17 @@ const DEFAULT_MENU = [
                 required
                 placeholder="${escapeHtml(getLocationPlaceholder(state.orderType))}"
                 value="${escapeHtml(state.form.locationValue)}"
-                class="w-full bg-bistro-sand/50 border border-bistro-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-bistro-terracotta"
+                class="w-full bg-bistro-sand border border-bistro-border text-bistro-ink rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-bistro-terracotta"
               />
 
               <textarea
                 id="inp-comment"
                 rows="2"
                 placeholder="Комментарий к заказу (без лука, аллергии, домофон...)"
-                class="w-full bg-bistro-sand/50 border border-bistro-border rounded-xl px-4 py-2.5 text-sm resize-none focus:outline-none focus:border-bistro-terracotta"
+                class="w-full bg-bistro-sand border border-bistro-border text-bistro-ink rounded-xl px-4 py-2.5 text-sm resize-none focus:outline-none focus:border-bistro-terracotta"
               >${escapeHtml(state.form.comment)}</textarea>
 
-              <div class="pt-3 border-t border-bistro-border/60 space-y-1.5 text-sm">
+              <div class="pt-3 border-t border-bistro-border space-y-1.5 text-sm">
                 <div class="flex justify-between text-bistro-muted">
                   <span>Блюда</span>
                   <span>${stats.subtotal} ₽</span>
@@ -906,7 +926,7 @@ const DEFAULT_MENU = [
                     `
                     : ""
                 }
-                <div class="flex justify-between items-center pt-2 border-t border-bistro-border/60 text-base sm:text-lg font-bold">
+                <div class="flex justify-between items-center pt-2 border-t border-bistro-border text-base sm:text-lg font-bold text-bistro-ink">
                   <span>Итого к оплате</span>
                   <span class="text-bistro-terracotta">${stats.total} ₽</span>
                 </div>
@@ -914,7 +934,7 @@ const DEFAULT_MENU = [
 
               ${
                 state.errorMsg
-                  ? `<p class="text-xs font-medium text-rose-600 bg-rose-50 border border-rose-200 rounded-xl px-3.5 py-2.5">${escapeHtml(state.errorMsg)}</p>`
+                  ? `<p class="text-xs font-medium text-rose-500 bg-rose-500/10 border border-rose-500/30 rounded-xl px-3.5 py-2.5">${escapeHtml(state.errorMsg)}</p>`
                   : ""
               }
 
@@ -943,14 +963,14 @@ const DEFAULT_MENU = [
             </button>
             ${
               cartEntries.length > 0
-                ? `<button type="button" id="clear-cart" class="text-xs sm:text-sm text-bistro-muted hover:text-rose-600">Очистить</button>`
+                ? `<button type="button" id="clear-cart" class="text-xs sm:text-sm text-bistro-muted hover:text-rose-500">Очистить</button>`
                 : ""
             }
           </div>
 
           <div class="bg-bistro-surface rounded-2xl p-5 sm:p-6 border border-bistro-border shadow-sm mb-5">
-            <h2 class="font-serif font-bold text-lg border-b border-bistro-border/60 pb-3">Ваш заказ (${stats.count})</h2>
-            <div class="divide-y divide-bistro-border/50">
+            <h2 class="font-serif font-bold text-lg border-b border-bistro-border pb-3 text-bistro-ink">Ваш заказ (${stats.count})</h2>
+            <div class="divide-y divide-bistro-border">
               ${itemsHtml}
             </div>
           </div>
@@ -973,13 +993,13 @@ const DEFAULT_MENU = [
 
       return `
         <main class="max-w-md w-full mx-auto px-6 py-12 flex-1 flex flex-col items-center justify-center text-center">
-          <div class="w-16 h-16 rounded-full bg-emerald-500/15 text-emerald-700 border border-emerald-500/30 flex items-center justify-center text-2xl font-bold mb-4">
+          <div class="w-16 h-16 rounded-full bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 flex items-center justify-center text-2xl font-bold mb-4">
             ✓
           </div>
           <span class="text-[11px] uppercase tracking-[0.2em] font-semibold text-bistro-terracotta">
             ${ord.isDemoOnly ? "Демо-режим (без GAS URL)" : "Передано на кухню"}
           </span>
-          <h2 class="font-serif font-bold text-2xl mt-1">Заказ #${escapeHtml(ord.id)} принят</h2>
+          <h2 class="font-serif font-bold text-2xl mt-1 text-bistro-ink">Заказ #${escapeHtml(ord.id)} принят</h2>
           <p class="text-xs sm:text-sm text-bistro-muted mt-2 leading-relaxed">
             ${escapeHtml(ord.branchTitle)} · ${escapeHtml(ord.typeLabel)}: <strong class="text-bistro-ink">${escapeHtml(ord.location)}</strong>.<br />
             Позиций: ${ord.itemsCount} · Сумма: <strong class="text-bistro-ink">${ord.total} ₽</strong>.
@@ -987,7 +1007,7 @@ const DEFAULT_MENU = [
           <button
             type="button"
             id="success-back-menu"
-            class="mt-6 bg-bistro-ink text-white px-7 py-3 rounded-full text-xs sm:text-sm font-semibold hover:opacity-90 transition"
+            class="mt-6 bg-bistro-pillActiveBg text-bistro-pillActiveText px-7 py-3 rounded-full text-xs sm:text-sm font-semibold hover:opacity-90 transition"
           >
             Вернуться в меню
           </button>
@@ -1003,20 +1023,20 @@ const DEFAULT_MENU = [
       return `
         <div
           id="dish-modal-backdrop"
-          class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4"
+          class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4"
         >
-          <div class="bg-bistro-cream w-full max-w-lg rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl border border-bistro-border">
+          <div class="bg-bistro-surface w-full max-w-lg rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl border border-bistro-border">
             <div class="relative h-60 sm:h-64 w-full bg-stone-900">
               <img src="${escapeHtml(dish.image)}" alt="${escapeHtml(dish.title)}" class="w-full h-full object-cover" />
               <button
                 type="button"
                 id="close-dish-modal"
-                class="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center text-xs"
+                class="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center text-xs"
               >✕</button>
             </div>
             <div class="p-5 sm:p-6">
               <div class="flex items-start justify-between gap-4">
-                <h3 class="font-serif font-bold text-xl leading-snug">${escapeHtml(dish.title)}</h3>
+                <h3 class="font-serif font-bold text-xl leading-snug text-bistro-ink">${escapeHtml(dish.title)}</h3>
                 <span class="font-serif font-bold text-lg text-bistro-terracotta whitespace-nowrap">${dish.price} ₽</span>
               </div>
               <span class="text-xs text-bistro-muted block mt-1">${escapeHtml(dish.weight)} · ${escapeHtml(dish.category)}</span>
@@ -1024,7 +1044,7 @@ const DEFAULT_MENU = [
               <button
                 type="button"
                 data-modal-add="${escapeHtml(dish.id)}"
-                class="modal-add-btn mt-6 w-full bg-bistro-ink hover:opacity-95 text-white py-3.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition"
+                class="modal-add-btn mt-6 w-full bg-bistro-terracotta hover:bg-bistro-terracottaDark text-white py-3.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition"
               >
                 Добавить в заказ · ${dish.price} ₽
               </button>
@@ -1070,13 +1090,13 @@ const DEFAULT_MENU = [
               <span class="text-[10px] tracking-[0.2em] font-semibold text-bistro-terracotta uppercase block truncate">
                 ${escapeHtml(branch.title)} · ${isTelegram ? "Mini App" : "Демо"}
               </span>
-              <h1 class="text-xl sm:text-2xl font-serif font-bold tracking-tight">L'Atelier</h1>
+              <h1 class="text-xl sm:text-2xl font-serif font-bold tracking-tight text-bistro-ink">L'Atelier</h1>
             </div>
 
             <button
               type="button"
               id="header-cart-btn"
-              class="bg-bistro-ink text-white px-4 py-2 rounded-full text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-sm hover:opacity-90 transition shrink-0"
+              class="bg-bistro-pillActiveBg text-bistro-pillActiveText px-4 py-2 rounded-full text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-sm hover:opacity-90 transition shrink-0"
             >
               <span>${state.view === "cart" ? "Меню" : "Корзина"}</span>
               <span class="bg-bistro-terracotta text-white px-2 py-0.5 rounded-full text-[11px] font-bold">
