@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L'Atelier Admin — Меню и отзывы | SKOV TECHNOLOGIES</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand_dark: '#1E2B25',
+            brand_bg: '#F7F4EF',
+            brand_accent: '#C05621'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-brand_bg text-brand_dark min-h-screen font-sans antialiased">
+
+  <!-- ЭКРАН ВХОДА -->
+  <div id="login-screen" class="min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white p-8 rounded-2xl shadow-lg max-w-sm w-full border border-brand_dark/10">
+      <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-brand_accent block text-center">SKOV TECHNOLOGIES</span>
+      <h1 class="text-2xl font-bold text-center mt-1 mb-1">L'ATELIER ADMIN</h1>
+      <p class="text-xs text-center text-brand_dark/60 mb-6">Управление меню и отзывами ресторана</p>
+      <form id="login-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider mb-1">Пароль доступа</label>
+          <input
+            type="password"
+            id="admin-pass-input"
+            required
+            placeholder="Введите пароль"
+            class="w-full px-4 py-3 border border-brand_dark/20 rounded-xl focus:outline-none focus:border-brand_dark"
+          />
+        </div>
+        <button type="submit" class="w-full py-3 bg-brand_dark text-white font-semibold rounded-xl hover:opacity-95 transition">
+          Войти
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ОСНОВНАЯ ПАНЕЛЬ -->
+  <div id="admin-panel" class="hidden max-w-5xl mx-auto p-4 md:p-8">
+    <header class="flex flex-wrap justify-between items-center gap-4 pb-6 border-b border-brand_dark/10 mb-6">
+      <div>
+        <h1 class="text-2xl font-bold">Панель управления L'Atelier</h1>
+        <p class="text-xs text-brand_dark/60">Создание, редактирование и удаление блюд и отзывов в Google Таблице</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="./index.html" target="_blank" class="text-xs font-semibold text-brand_dark/80 hover:underline">Открыть сайт →</a>
+        <button type="button" onclick="logout()" class="text-xs font-semibold text-rose-600 hover:underline">Выйти</button>
+      </div>
+    </header>
+
+    <div class="flex gap-3 mb-6">
+      <button type="button" onclick="switchTab('menu')" id="tab-btn-menu" class="px-5 py-2.5 bg-brand_dark text-white text-sm font-semibold rounded-xl transition">
+        Меню ресторана
+      </button>
+      <button type="button" onclick="switchTab('reviews')" id="tab-btn-reviews" class="px-5 py-2.5 bg-white text-brand_dark border border-brand_dark/20 text-sm font-semibold rounded-xl transition">
+        Отзывы
+      </button>
+    </div>
+
+    <!-- ВКЛАДКА МЕНЮ -->
+    <section id="section-menu" class="space-y-6">
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-brand_dark/10">
+        <div class="flex items-center justify-between mb-4">
+          <h2 id="menu-form-title" class="text-lg font-bold">Добавить новое блюдо</h2>
+          <button type="button" id="cancel-edit-menu-btn" onclick="resetMenuForm()" class="hidden text-xs font-semibold text-rose-600 hover:underline">
+            Отменить редактирование
+          </button>
+        </div>
+
+        <form id="menu-form" class="space-y-4">
+          <input type="hidden" id="menu-edit-id" value="" />
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase mb-1">Название блюда *</label>
+              <input type="text" id="dish-title" required placeholder="Например: Стейк Рибай" class="w-full px-3 py-2 border border-brand_dark/20 rounded-xl" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase mb-1">Категория *</label>
+              <input type="text" id="dish-category" required list="cat-suggestions" placeholder="Горячее" class="w-full px-3 py-2 border border-brand_dark/20 rounded-xl" />
+              <datalist id="cat-suggestions">
+                <option value="Завтраки"></option>
+                <option value="Салаты и закуски"></option>
+                <option value="Супы"></option>
+                <option value="Горячее"></option>
+                <option value="Десерты"></option>
+                <option value="Напитки"></option>
+              </datalist>
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase mb-1">Цена, ₽ *</label>
+              <input type="number" id="dish-price" required min="1" step="1" placeholder="1450" class="w-full px-3 py-2 border border-brand_dark/20 rounded-xl" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase mb-1">Вес / объём</label>
+              <input type="text" id="dish-weight" placeholder="Например: 300 г или 250 мл" class="w-full px-3 py-2 border border-brand_dark/20 rounded-xl" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase mb-1">Плашка (опционально)</label>
+              <input type="text" id="dish-badge" placeholder="Например: Шеф, Хит, Новинка" class="w-full px-3 py-2 border border-brand_dark/20 rounded-xl" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase mb-1">Описание и состав</label>
+            <textarea id="dish-desc" rows="2" placeholder="Ингредиенты, прожарка, подача..." class="w-full px-3 py-2 border border-brand_dark/20 rounded-xl"></textarea>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase mb-1">Ссылка на фото (URL)</label>
+              <input type="url" id="dish-image-url" placeholder="https://..." class="w-full px-3 py-2 border border-brand_dark/20 rounded-xl" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase mb-1">Или загрузить файл фото</label>
+              <input type="file" id="dish-photo-file" accept="image/*" class="w-full text-sm file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand_dark file:text-white" />
+              <p class="text-[11px] text-brand_dark/50 mt-1">Если настроен Cloudinary — загрузит туда; иначе сожмёт в data URL</p>
+            </div>
+          </div>
+
+          <button type="submit" id="menu-submit-btn" class="px-6 py-3 bg-brand_accent text-white font-bold rounded-xl hover:opacity-95 transition">
+            Сохранить блюдо
+          </button>
+        </form>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-brand_dark/10">
+        <h3 class="text-base font-bold mb-4">Текущие позиции меню</h3>
+        <div id="admin-menu-list" class="space-y-3 text-sm text-brand_dark/70">Загрузка...</div>
+      </div>
+    </section>
+
+    <!-- ВКЛАДКА ОТЗЫВЫ -->
+    <section id="section-reviews" class="hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-brand_dark/10">
+        <div class="flex items-center justify-between mb-4">
+          <h2 id="review-form-title" class="text-lg font-bold">Добавить отзыв гостя</h2>
+          <button type="button" id="cancel-edit-review-btn" onclick="resetReviewForm()" class="hidden text-xs font-semibold text-rose-600 hover:underline">
+            Отменить редактирование
+          </button>
+        </div>
+
+        <form id="review-form" class="space-y-4">
+          <input type="hidden" id="review-edit-id" value="" />
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase mb-1">Имя гостя *</label>
+              <input type="text" id="rev-name" required placeholder="Например: Елена Смирнова" class="w-full px-3 py-2 border border-brand_dark/20 rounded-xl" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase mb-1">Ресторан / формат</label>
+              <input type="text" id="rev-location" placeholder="Например: L'Atelier · Центр" class="w-full px-3 py-2 border border-brand_dark/20 rounded-xl" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase mb-1">Дата</label>
+              <input type="text" id="rev-date" placeholder="Например: 21.11.2026" class="w-full px-3 py-2 border border-brand_dark/20 rounded-xl" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase mb-1">Текст отзыва *</label>
+            <textarea id="rev-text" rows="3" required placeholder="Впечатления гостя о кухне и доставке..." class="w-full px-3 py-2 border border-brand_dark/20 rounded-xl"></textarea>
+          </div>
+
+          <button type="submit" id="review-submit-btn" class="px-6 py-3 bg-brand_accent text-white font-bold rounded-xl hover:opacity-95 transition">
+            Сохранить отзыв
+          </button>
+        </form>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-brand_dark/10">
+        <h3 class="text-base font-bold mb-4">Текущие отзывы на сайте</h3>
+        <div id="admin-reviews-list" class="space-y-3 text-sm text-brand_dark/70">Загрузка...</div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // ВСТАВЬТЕ ВАШ URL WEB APP ИЗ GOOGLE APPS SCRIPT:
+    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzPaXuJedwLy8i1eDGkDAe7lUAQgHlQ0pQsUsetgYxrkT54cIZB66tKFwfhnIVh3JMW5Q/exec";
+
+    // Опционально (если хотите хранить фото в Cloudinary):
+    const CLOUDINARY_CLOUD_NAME = "";
+    const CLOUDINARY_UPLOAD_PRESET = "";
+
+    let adminPassword = localStorage.getItem("latelier_admin_pass") || "";
+    let cachedMenu = [];
+    let cachedReviews = [];
+
+    if (adminPassword) showPanel();
+
+    document.getElementById("login-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = e.target.querySelector("button");
+      const passInput = document.getElementById("admin-pass-input").value.trim();
+      const orig = btn.innerText;
+      btn.disabled = true;
+      btn.innerText = "Проверка...";
+
+      try {
+        adminPassword = passInput;
+        await postToGAS({ action: "auth" });
+        localStorage.setItem("latelier_admin_pass", adminPassword);
+        showPanel();
+      } catch (err) {
+        adminPassword = "";
+        if (err.message !== "Unauthorized") alert("Ошибка: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = orig;
+      }
+    });
+
+    function logout() {
+      localStorage.removeItem("latelier_admin_pass");
+      location.reload();
+    }
+
+    function showPanel() {
+      document.getElementById("login-screen").classList.add("hidden");
+      document.getElementById("admin-panel").classList.remove("hidden");
+      loadAdminData();
+    }
+
+    function switchTab(tab) {
+      const isMenu = tab === "menu";
+      document.getElementById("section-menu").classList.toggle("hidden", !isMenu);
+      document.getElementById("section-reviews").classList.toggle("hidden", isMenu);
+      document.getElementById("tab-btn-menu").className = isMenu
+        ? "px-5 py-2.5 bg-brand_dark text-white text-sm font-semibold rounded-xl transition"
+        : "px-5 py-2.5 bg-white text-brand_dark border border-brand_dark/20 text-sm font-semibold rounded-xl transition";
+      document.getElementById("tab-btn-reviews").className = !isMenu
+        ? "px-5 py-2.5 bg-brand_dark text-white text-sm font-semibold rounded-xl transition"
+        : "px-5 py-2.5 bg-white text-brand_dark border border-brand_dark/20 text-sm font-semibold rounded-xl transition";
+    }
+
+    async function postToGAS(payload) {
+      const res = await fetch(GAS_API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ ...payload, password: adminPassword })
+      });
+      const data = await res.json();
+      if (data.status === 401) {
+        alert("Неверный пароль доступа.");
+        logout();
+        throw new Error("Unauthorized");
+      }
+      if (!data.ok) {
+        throw new Error(data.error || "Ошибка Google Apps Script");
+      }
+      return data;
+    }
+
+    function compressToDataUrl(file, maxWidth = 900, quality = 0.75) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            let w = img.width;
+            let h = img.height;
+            if (w > maxWidth) {
+              h = Math.round((h * maxWidth) / w);
+              w = maxWidth;
+            }
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL("image/jpeg", quality));
+          };
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function resolveImageUrl(fileInput, urlInputValue, fallbackUrl) {
+      const file = fileInput && fileInput.files && fileInput.files[0];
+      if (file) {
+        if (CLOUDINARY_CLOUD_NAME && CLOUDINARY_UPLOAD_PRESET) {
+          const fd = new FormData();
+          fd.append("file", file);
+          fd.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+          const r = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+            method: "POST",
+            body: fd
+          });
+          const j = await r.json();
+          if (!r.ok) throw new Error(j.error?.message || "Ошибка загрузки фото в Cloudinary");
+          return j.secure_url;
+        }
+        return await compressToDataUrl(file);
+      }
+      if (urlInputValue && urlInputValue.trim()) return urlInputValue.trim();
+      return fallbackUrl || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80";
+    }
+
+    function resetMenuForm() {
+      document.getElementById("menu-edit-id").value = "";
+      document.getElementById("menu-form-title").innerText = "Добавить новое блюдо";
+      document.getElementById("cancel-edit-menu-btn").classList.add("hidden");
+      document.getElementById("menu-form").reset();
+    }
+
+    function startEditMenu(id) {
+      const item = cachedMenu.find((m) => String(m.id) === String(id));
+      if (!item) return;
+      document.getElementById("menu-edit-id").value = item.id;
+      document.getElementById("menu-form-title").innerText = `Редактирование: ${item.title}`;
+      document.getElementById("cancel-edit-menu-btn").classList.remove("hidden");
+      document.getElementById("dish-title").value = item.title || "";
+      document.getElementById("dish-category").value = item.category || "Горячее";
+      document.getElementById("dish-price").value = item.price || "";
+      document.getElementById("dish-weight").value = item.weight || "";
+      document.getElementById("dish-badge").value = item.badge || "";
+      document.getElementById("dish-desc").value = item.description || "";
+      document.getElementById("dish-image-url").value = item.image || "";
+      document.getElementById("dish-photo-file").value = "";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    document.getElementById("menu-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById("menu-submit-btn");
+      const orig = btn.innerText;
+      btn.disabled = true;
+      btn.innerText = "Сохраняем...";
+
+      try {
+        const editId = document.getElementById("menu-edit-id").value.trim();
+        const existing = cachedMenu.find((m) => String(m.id) === editId);
+        const image = await resolveImageUrl(
+          document.getElementById("dish-photo-file"),
+          document.getElementById("dish-image-url").value,
+          existing ? existing.image : ""
+        );
+
+        const item = {
+          id: editId || "m_" + Date.now(),
+          title: document.getElementById("dish-title").value.trim(),
+          category: document.getElementById("dish-category").value.trim(),
+          price: Number(document.getElementById("dish-price").value),
+          weight: document.getElementById("dish-weight").value.trim() || "250 г",
+          badge: document.getElementById("dish-badge").value.trim(),
+          description: document.getElementById("dish-desc").value.trim(),
+          image
+        };
+
+        await postToGAS({
+          action: editId ? "menu_update" : "menu_add",
+          item
+        });
+
+        resetMenuForm();
+        await loadAdminData();
+        alert(editId ? "Блюдо обновлено!" : "Блюдо добавлено!");
+      } catch (err) {
+        if (err.message !== "Unauthorized") alert("Ошибка: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = orig;
+      }
+    });
+
+    async function deleteMenuItem(id) {
+      if (!confirm("Удалить это блюдо из меню?")) return;
+      try {
+        await postToGAS({ action: "menu_delete", id });
+        await loadAdminData();
+      } catch (err) {
+        if (err.message !== "Unauthorized") alert("Ошибка удаления: " + err.message);
+      }
+    }
+
+    function resetReviewForm() {
+      document.getElementById("review-edit-id").value = "";
+      document.getElementById("review-form-title").innerText = "Добавить отзыв гостя";
+      document.getElementById("cancel-edit-review-btn").classList.add("hidden");
+      document.getElementById("review-form").reset();
+    }
+
+    function startEditReview(id) {
+      const rev = cachedReviews.find((r) => String(r.id) === String(id));
+      if (!rev) return;
+      document.getElementById("review-edit-id").value = rev.id;
+      document.getElementById("review-form-title").innerText = `Редактирование отзыва: ${rev.name}`;
+      document.getElementById("cancel-edit-review-btn").classList.remove("hidden");
+      document.getElementById("rev-name").value = rev.name || "";
+      document.getElementById("rev-location").value = rev.location || "";
+      document.getElementById("rev-date").value = rev.date || "";
+      document.getElementById("rev-text").value = rev.text || "";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    document.getElementById("review-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById("review-submit-btn");
+      const orig = btn.innerText;
+      btn.disabled = true;
+      btn.innerText = "Сохраняем...";
+
+      try {
+        const editId = document.getElementById("review-edit-id").value.trim();
+        const review = {
+          id: editId || "r_" + Date.now(),
+          name: document.getElementById("rev-name").value.trim(),
+          location: document.getElementById("rev-location").value.trim(),
+          date: document.getElementById("rev-date").value.trim(),
+          text: document.getElementById("rev-text").value.trim()
+        };
+
+        await postToGAS({
+          action: editId ? "review_update" : "review_add",
+          review
+        });
+
+        resetReviewForm();
+        await loadAdminData();
+        alert(editId ? "Отзыв обновлён!" : "Отзыв опубликован!");
+      } catch (err) {
+        if (err.message !== "Unauthorized") alert("Ошибка: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = orig;
+      }
+    });
+
+    async function deleteReviewItem(id) {
+      if (!confirm("Удалить этот отзыв?")) return;
+      try {
+        await postToGAS({ action: "review_delete", id });
+        await loadAdminData();
+      } catch (err) {
+        if (err.message !== "Unauthorized") alert("Ошибка удаления: " + err.message);
+      }
+    }
+
+    function esc(s) {
+      return String(s || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    async function loadAdminData() {
+      try {
+        const [mRes, rRes] = await Promise.all([
+          fetch(`${GAS_API_URL}?action=menu&_t=${Date.now()}`),
+          fetch(`${GAS_API_URL}?action=reviews&_t=${Date.now()}`)
+        ]);
+        cachedMenu = await mRes.json();
+        cachedReviews = await rRes.json();
+
+        document.getElementById("admin-menu-list").innerHTML = cachedMenu.length
+          ? cachedMenu
+              .map(
+                (m) => `
+                  <div class="flex flex-wrap items-center justify-between gap-3 p-3 bg-brand_bg rounded-xl border border-brand_dark/10">
+                    <div class="flex items-center gap-3 min-w-0">
+                      <img src="${esc(m.image)}" alt="${esc(m.title)}" class="w-12 h-12 rounded-lg object-cover shrink-0 bg-white" />
+                      <div class="min-w-0">
+                        <p class="font-bold text-brand_dark truncate">${esc(m.title)} <span class="text-xs font-normal text-brand_dark/60">(${esc(m.category)})</span></p>
+                        <p class="text-xs text-brand_dark/70 truncate">${esc(m.price)} ₽ · ${esc(m.weight)} · ${esc(m.description)}</p>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                      <button type="button" onclick="startEditMenu('${esc(m.id)}')" class="px-3 py-1.5 bg-white border border-brand_dark/20 text-brand_dark text-xs font-semibold rounded-lg hover:bg-brand_dark/5">
+                        Изменить
+                      </button>
+                      <button type="button" onclick="deleteMenuItem('${esc(m.id)}')" class="px-3 py-1.5 bg-rose-100 text-rose-700 text-xs font-semibold rounded-lg hover:bg-rose-200">
+                        Удалить
+                      </button>
+                    </div>
+                  </div>
+                `
+              )
+              .join("")
+          : "Блюд пока нет";
+
+        document.getElementById("admin-reviews-list").innerHTML = cachedReviews.length
+          ? cachedReviews
+              .map(
+                (r) => `
+                  <div class="flex flex-wrap items-center justify-between gap-3 p-3 bg-brand_bg rounded-xl border border-brand_dark/10">
+                    <div class="min-w-0 flex-1 pr-2">
+                      <p class="font-bold text-brand_dark">${esc(r.name)} <span class="text-xs font-normal text-brand_dark/60">${esc([r.location, r.date].filter(Boolean).join(" · "))}</span></p>
+                      <p class="text-xs text-brand_dark/80 line-clamp-2">${esc(r.text)}</p>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                      <button type="button" onclick="startEditReview('${esc(r.id)}')" class="px-3 py-1.5 bg-white border border-brand_dark/20 text-brand_dark text-xs font-semibold rounded-lg hover:bg-brand_dark/5">
+                        Изменить
+                      </button>
+                      <button type="button" onclick="deleteReviewItem('${esc(r.id)}')" class="px-3 py-1.5 bg-rose-100 text-rose-700 text-xs font-semibold rounded-lg hover:bg-rose-200">
+                        Удалить
+                      </button>
+                    </div>
+                  </div>
+                `
+              )
+              .join("")
+          : "Отзывов пока нет";
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  </script>
+</body>
+</html>
